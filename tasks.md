@@ -16,53 +16,53 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 
 ## Phase 2: Core Types and Interfaces
 
-- [ ] **Define TestCase interface** — Implement the `TestCase` interface in `src/types.ts` with fields: `id` (string), `input` (string), `expected` (string | undefined), `context` (string[] | undefined), `metadata` (Record<string, unknown> | undefined), `tags` (string[] | undefined), `difficulty` (number | undefined), `category` (string | undefined). | Status: not_done
-- [ ] **Define Dataset interface** — Implement the `Dataset` interface in `src/types.ts` with properties: `name`, `version`, `description`, `cases`, `metadata`, `changelog`, `schema`, and all method signatures (`split`, `sample`, `dedup`, `filter`, `map`, `add`, `addMany`, `remove`, `update`, `export`, `stats`, `validate`, `bump`, `size`, `get`, `has`, `ids`, `categories`, `tagSet`, `slice`, `concat`, `shuffle`, `toJSON`). | Status: not_done
+- [x] **Define TestCase interface** — Implement the `TestCase` interface in `src/types.ts` with fields: `id` (string), `input` (string), `expected` (string | undefined), `context` (string[] | undefined), `metadata` (Record<string, unknown> | undefined), `tags` (string[] | undefined), `difficulty` (number | undefined), `category` (string | undefined). | Status: done
+- [x] **Define Dataset interface** — Implement the `Dataset` interface in `src/types.ts` with properties: `name`, `version`, `description`, `cases`, `metadata`, `changelog`, `schema`, and all method signatures (`split`, `sample`, `dedup`, `filter`, `map`, `add`, `addMany`, `remove`, `update`, `export`, `stats`, `validate`, `bump`, `size`, `get`, `has`, `ids`, `categories`, `tagSet`, `slice`, `concat`, `shuffle`, `toJSON`). | Status: done
 - [ ] **Define ChangelogEntry interface** — Implement the `ChangelogEntry` interface with fields: `version`, `date` (ISO 8601), `author`, `description`, `added`, `removed`, `modified`. | Status: not_done
 - [ ] **Define DatasetSchema interface** — Implement the `DatasetSchema` interface with fields: `requiredFields`, `categories`, `tags`, `difficultyRange` ({ min, max }), `customValidators` (array of { field, rule, message }). | Status: not_done
-- [ ] **Define SplitConfig and SplitResult interfaces** — Implement `SplitConfig` with `ratios`, `mode`, `seed`, `stratifyBy`, `k`, `holdout`. Implement `SplitResult` as `Record<string, Dataset>` with optional `holdout`. Implement `KFoldResult` with `folds` and `getFold(i)`. | Status: not_done
-- [ ] **Define SampleOptions interface** — Implement `SampleOptions` with `mode` ('random' | 'stratified' | 'difficulty-weighted' | 'category-balanced'), `seed`, `stratifyBy`, `replace`. | Status: not_done
+- [x] **Define SplitConfig and SplitResult interfaces** — Implement `SplitConfig` with `ratios`, `mode`, `seed`, `stratifyBy`, `k`, `holdout`. Implement `SplitResult` as `Record<string, Dataset>` with optional `holdout`. Implement `KFoldResult` with `folds` and `getFold(i)`. | Status: done
+- [x] **Define SampleOptions interface** — Implement `SampleOptions` with `mode` ('random' | 'stratified' | 'difficulty-weighted' | 'category-balanced'), `seed`, `stratifyBy`, `replace`. | Status: done
 - [ ] **Define DedupOptions and DedupReport interfaces** — Implement `DedupOptions` with `mode`, `field`, `threshold`, `keep`, `caseSensitive`. Implement `DedupReport` with `originalCount`, `deduplicatedCount`, `removedCount`, `duplicateGroups`. | Status: not_done
 - [ ] **Define LoadOptions and DatasetSource types** — Implement `LoadOptions` with `format`, `name`, `version`, `schema`, `columnMap`, `fieldMap`, `inputVar`, `encoding`, `skipRows`, `delimiter`. Implement `DatasetSource` union type (string | TestCase[] | { url } | { stream } | { loader }). | Status: not_done
-- [ ] **Define ExportFormat and ExportOptions types** — Implement `ExportFormat` type ('promptfoo' | 'autoevals' | 'ragas' | 'csv' | 'tsv' | 'jsonl' | 'json'). Implement `ExportOptions` with `pretty`, `includeMetadata`, `columnOrder`, `inputVar`, `assertType`, `fieldMap`, `onLossyField`. | Status: not_done
-- [ ] **Define CreateOptions interface** — Implement `CreateOptions` with `name`, `version` (default '1.0.0'), `description`, `cases`, `metadata`, `schema`. | Status: not_done
+- [x] **Define ExportFormat and ExportOptions types** — Implement `ExportFormat` type ('promptfoo' | 'autoevals' | 'ragas' | 'csv' | 'tsv' | 'jsonl' | 'json'). Implement `ExportOptions` with `pretty`, `includeMetadata`, `columnOrder`, `inputVar`, `assertType`, `fieldMap`, `onLossyField`. | Status: done
+- [x] **Define CreateOptions interface** — Implement `CreateOptions` with `name`, `version` (default '1.0.0'), `description`, `cases`, `metadata`, `schema`. | Status: done
 - [ ] **Define BumpOptions interface** — Implement `BumpOptions` with `description`, `author`, `date`, `metadata`. | Status: not_done
-- [ ] **Define ValidationResult, ValidationError, ValidationWarning interfaces** — Implement all validation result types with their `type` union fields and other properties as specified. | Status: not_done
-- [ ] **Define DatasetStats interface** — Implement `DatasetStats` with `totalCases`, `withExpected`, `withContext`, `expectedCoverage`, `contextCoverage`, `categories`, `tags`, `difficulty` (with min/max/mean/median/distribution), `inputLength` (with min/max/mean/median/stddev/p90/p99), `expectedLength`, `duplicates` (exact/normalized counts). | Status: not_done
-- [ ] **Export all types from index.ts** — Re-export all public types and interfaces from `src/index.ts`. | Status: not_done
+- [x] **Define ValidationResult, ValidationError, ValidationWarning interfaces** — Implement all validation result types with their `type` union fields and other properties as specified. | Status: done
+- [x] **Define DatasetStats interface** — Implement `DatasetStats` with `totalCases`, `withExpected`, `withContext`, `expectedCoverage`, `contextCoverage`, `categories`, `tags`, `difficulty` (with min/max/mean/median/distribution), `inputLength` (with min/max/mean/median/stddev/p90/p99), `expectedLength`, `duplicates` (exact/normalized counts). | Status: done
+- [x] **Export all types from index.ts** — Re-export all public types and interfaces from `src/index.ts`. | Status: done
 
 ---
 
 ## Phase 3: Seeded PRNG
 
-- [ ] **Implement Mulberry32 PRNG** — Create `src/prng.ts` with a seeded Mulberry32 pseudo-random number generator. Expose a function that takes a seed and returns a generator producing deterministic floats in [0, 1). This PRNG must NOT use `Math.random()` to guarantee cross-platform determinism. | Status: not_done
-- [ ] **Implement seeded shuffle utility** — Add a `shuffle(array, seed)` utility that uses the Mulberry32 PRNG to produce a deterministic Fisher-Yates shuffle. | Status: not_done
+- [x] **Implement Mulberry32 PRNG** — Create `src/prng.ts` with a seeded Mulberry32 pseudo-random number generator. Expose a function that takes a seed and returns a generator producing deterministic floats in [0, 1). This PRNG must NOT use `Math.random()` to guarantee cross-platform determinism. | Status: done
+- [x] **Implement seeded shuffle utility** — Add a `shuffle(array, seed)` utility that uses the Mulberry32 PRNG to produce a deterministic Fisher-Yates shuffle. | Status: done
 - [ ] **Write PRNG tests** — Create `src/__tests__/prng.test.ts`. Test determinism (same seed produces same sequence), distribution uniformity, and that different seeds produce different sequences. | Status: not_done
 
 ---
 
 ## Phase 4: Dataset Class
 
-- [ ] **Implement Dataset class** — Create `src/dataset.ts` with an immutable `Dataset` class. The constructor accepts `name`, `version`, `cases`, `description`, `metadata`, `changelog`, `schema`. All properties are readonly. | Status: not_done
-- [ ] **Implement Dataset.filter()** — Return a new Dataset containing only test cases matching the predicate. Preserve name, version, metadata, schema. | Status: not_done
-- [ ] **Implement Dataset.map()** — Return a new Dataset with test cases transformed by the mapping function. Preserve name, version, metadata, schema. | Status: not_done
-- [ ] **Implement Dataset.add()** — Return a new Dataset with the test case appended. Auto-generate UUID v4 for `id` if not provided. | Status: not_done
+- [x] **Implement Dataset class** — Create `src/dataset.ts` with an immutable `Dataset` class. The constructor accepts `name`, `version`, `cases`, `description`, `metadata`, `changelog`, `schema`. All properties are readonly. | Status: done
+- [x] **Implement Dataset.filter()** — Return a new Dataset containing only test cases matching the predicate. Preserve name, version, metadata, schema. | Status: done
+- [x] **Implement Dataset.map()** — Return a new Dataset with test cases transformed by the mapping function. Preserve name, version, metadata, schema. | Status: done
+- [x] **Implement Dataset.add()** — Return a new Dataset with the test case appended. Auto-generate UUID v4 for `id` if not provided. | Status: done
 - [ ] **Implement Dataset.addMany()** — Return a new Dataset with multiple test cases appended. Auto-generate IDs for any without one. | Status: not_done
-- [ ] **Implement Dataset.remove()** — Return a new Dataset with the test case matching the given `id` removed. | Status: not_done
-- [ ] **Implement Dataset.update()** — Return a new Dataset with the test case matching the given `id` updated with the provided partial changes. | Status: not_done
-- [ ] **Implement Dataset.get()** — Find and return a test case by ID, or undefined if not found. | Status: not_done
-- [ ] **Implement Dataset.has()** — Return boolean indicating whether a test case with the given ID exists. | Status: not_done
-- [ ] **Implement Dataset.ids()** — Return an array of all test case IDs. | Status: not_done
-- [ ] **Implement Dataset.categories()** — Return an array of unique category values across all test cases. | Status: not_done
-- [ ] **Implement Dataset.tagSet()** — Return an array of unique tags across all test cases. | Status: not_done
-- [ ] **Implement Dataset.size** — Return `cases.length` as a getter property. | Status: not_done
-- [ ] **Implement Dataset.slice()** — Return a new Dataset with a positional slice of the cases array. | Status: not_done
-- [ ] **Implement Dataset.concat()** — Return a new Dataset merging cases from another Dataset. | Status: not_done
-- [ ] **Implement Dataset.shuffle()** — Return a new Dataset with cases shuffled using the seeded PRNG. Default seed: 42. | Status: not_done
-- [ ] **Implement Dataset.toJSON()** — Serialize the Dataset to a plain JSON-serializable object. | Status: not_done
-- [ ] **Implement createDataset() factory** — Create `createDataset(options: CreateOptions)` in `src/dataset.ts` (or `src/index.ts`). Returns a new Dataset with default version '1.0.0' if not specified. | Status: not_done
-- [ ] **Verify immutability** — Ensure that all transformation/mutation methods return new Dataset instances and never modify the original. Use `ReadonlyArray<TestCase>` for `cases`. | Status: not_done
-- [ ] **Write Dataset class tests** — Create `src/__tests__/dataset.test.ts`. Test all methods: filter, map, add, addMany, remove, update, get, has, ids, categories, tagSet, size, slice, concat, shuffle, toJSON, immutability. | Status: not_done
+- [x] **Implement Dataset.remove()** — Return a new Dataset with the test case matching the given `id` removed. | Status: done
+- [x] **Implement Dataset.update()** — Return a new Dataset with the test case matching the given `id` updated with the provided partial changes. | Status: done
+- [x] **Implement Dataset.get()** — Find and return a test case by ID, or undefined if not found. | Status: done
+- [x] **Implement Dataset.has()** — Return boolean indicating whether a test case with the given ID exists. | Status: done
+- [x] **Implement Dataset.ids()** — Return an array of all test case IDs. | Status: done
+- [x] **Implement Dataset.categories()** — Return an array of unique category values across all test cases. | Status: done
+- [x] **Implement Dataset.tagSet()** — Return an array of unique tags across all test cases. | Status: done
+- [x] **Implement Dataset.size** — Return `cases.length` as a getter property. | Status: done
+- [x] **Implement Dataset.slice()** — Return a new Dataset with a positional slice of the cases array. | Status: done
+- [x] **Implement Dataset.concat()** — Return a new Dataset merging cases from another Dataset. | Status: done
+- [x] **Implement Dataset.shuffle()** — Return a new Dataset with cases shuffled using the seeded PRNG. Default seed: 42. | Status: done
+- [x] **Implement Dataset.toJSON()** — Serialize the Dataset to a plain JSON-serializable object. | Status: done
+- [x] **Implement createDataset() factory** — Create `createDataset(options: CreateOptions)` in `src/dataset.ts` (or `src/index.ts`). Returns a new Dataset with default version '1.0.0' if not specified. | Status: done
+- [x] **Verify immutability** — Ensure that all transformation/mutation methods return new Dataset instances and never modify the original. Use `ReadonlyArray<TestCase>` for `cases`. | Status: done
+- [x] **Write Dataset class tests** — Create `src/__tests__/dataset.test.ts`. Test all methods: filter, map, add, addMany, remove, update, get, has, ids, categories, tagSet, size, slice, concat, shuffle, toJSON, immutability. | Status: done
 
 ---
 
@@ -70,23 +70,23 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 
 ### 5a: JSON Loading
 
-- [ ] **Implement JSON loader** — In `src/load.ts`, implement loading from JSON files. Support both JSON arrays of test cases and single JSON objects with a `cases` or `tests` array at the top level. | Status: not_done
+- [x] **Implement JSON loader** — In `src/load.ts`, implement loading from JSON files. Support both JSON arrays of test cases and single JSON objects with a `cases` or `tests` array at the top level. | Status: done
 - [ ] **Implement JSON format auto-detection** — For `.json` files, inspect the structure: detect promptfoo (has `tests` array with `vars`), RAGAS (array with `question`/`ground_truth`), autoevals (array with `input`/`expected`), or internal format. | Status: not_done
 
 ### 5b: JSONL Loading
 
-- [ ] **Implement JSONL loader** — Create `src/formats/jsonl.ts`. Parse one JSON object per line. Handle blank lines and trailing newlines gracefully. Support optional `fieldMap` for custom field names. | Status: not_done
-- [ ] **Handle JSONL edge cases** — Handle malformed lines (log warning, skip or error based on config), blank lines (skip), trailing newline (ignore). | Status: not_done
+- [x] **Implement JSONL loader** — Create `src/formats/jsonl.ts`. Parse one JSON object per line. Handle blank lines and trailing newlines gracefully. Support optional `fieldMap` for custom field names. | Status: done
+- [x] **Handle JSONL edge cases** — Handle malformed lines (log warning, skip or error based on config), blank lines (skip), trailing newline (ignore). | Status: done
 
 ### 5c: CSV/TSV Loading
 
-- [ ] **Implement CSV loader** — Create `src/formats/csv.ts`. Use `csv-parse` to parse CSV files with header row. Map column names to TestCase fields using default column name mapping (input/question/query, expected/answer/ground_truth, etc.). | Status: not_done
+- [x] **Implement CSV loader** — Create `src/formats/csv.ts`. Use `csv-parse` to parse CSV files with header row. Map column names to TestCase fields using default column name mapping (input/question/query, expected/answer/ground_truth, etc.). | Status: done
 - [ ] **Implement TSV loader** — Support TSV by using tab delimiter. Reuse CSV loader with `delimiter: '\t'`. | Status: not_done
-- [ ] **Implement CSV columnMap option** — Support custom `columnMap` option to override default column-to-field mapping. | Status: not_done
+- [x] **Implement CSV columnMap option** — Support custom `columnMap` option to override default column-to-field mapping. | Status: done
 - [ ] **Implement CSV skipRows option** — Support `skipRows` to skip rows before the header row. | Status: not_done
 - [ ] **Handle CSV context parsing** — Parse `context` column as JSON array if value contains `[...]`, otherwise treat as single-element array. | Status: not_done
-- [ ] **Handle CSV tags parsing** — Parse `tags` column as comma-separated values. | Status: not_done
-- [ ] **Handle CSV difficulty parsing** — Parse `difficulty` column as a number. | Status: not_done
+- [x] **Handle CSV tags parsing** — Parse `tags` column as comma-separated values. | Status: done
+- [x] **Handle CSV difficulty parsing** — Parse `difficulty` column as a number. | Status: done
 - [ ] **Handle CSV extra columns** — Map columns not matching known fields to `metadata` entries. | Status: not_done
 
 ### 5d: YAML / promptfoo Loading
@@ -105,13 +105,13 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 
 ### 5g: loadDataset Function
 
-- [ ] **Implement loadDataset() function** — Create the main `loadDataset(source, options?)` function in `src/load.ts`. Orchestrate the loading pipeline: Read -> Parse -> Detect Format -> Map Fields -> Validate -> Assign IDs -> return Dataset. | Status: not_done
+- [x] **Implement loadDataset() function** — Create the main `loadDataset(source, options?)` function in `src/load.ts`. Orchestrate the loading pipeline: Read -> Parse -> Detect Format -> Map Fields -> Validate -> Assign IDs -> return Dataset. | Status: done
 - [ ] **Implement file path source handling** — When source is a string file path, read file, detect format from extension and content. | Status: not_done
-- [ ] **Implement in-memory array source handling** — When source is `TestCase[]`, create Dataset directly from the array. | Status: not_done
+- [x] **Implement in-memory array source handling** — When source is `TestCase[]`, create Dataset directly from the array. | Status: done
 - [ ] **Implement URL source handling** — When source is `{ url: string }`, fetch the URL content and parse it. | Status: not_done
 - [ ] **Implement custom loader source handling** — When source is `{ loader: CustomLoaderFn }`, invoke the custom loader and use its output. | Status: not_done
 - [ ] **Implement format auto-detection by extension** — Map `.json`, `.jsonl`, `.ndjson`, `.yaml`, `.yml`, `.csv`, `.tsv` to their respective formats. | Status: not_done
-- [ ] **Implement ID auto-assignment** — For test cases without an `id`, generate UUID v4 using the `uuid` package. | Status: not_done
+- [x] **Implement ID auto-assignment** — For test cases without an `id`, generate UUID v4 using the `uuid` package. | Status: done
 - [ ] **Implement dataset name inference** — Default `name` to filename without extension when loading from a file path. | Status: not_done
 - [ ] **Implement encoding option** — Support configurable file encoding (default: 'utf-8'). | Status: not_done
 
@@ -129,62 +129,62 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 
 ## Phase 6: Splitting
 
-- [ ] **Implement random split** — In `src/split.ts`, implement random splitting. Use seeded PRNG (Mulberry32) to shuffle, then assign to partitions based on cumulative ratios. Validate that ratios sum to 1.0. | Status: not_done
-- [ ] **Implement stratified split** — Group test cases by `stratifyBy` field (default: `category`). Apply random split independently within each group using the same seed. Handle uncategorized cases as a separate bucket. | Status: not_done
+- [x] **Implement random split** — In `src/split.ts`, implement random splitting. Use seeded PRNG (Mulberry32) to shuffle, then assign to partitions based on cumulative ratios. Validate that ratios sum to 1.0. | Status: done
+- [x] **Implement stratified split** — Group test cases by `stratifyBy` field (default: `category`). Apply random split independently within each group using the same seed. Handle uncategorized cases as a separate bucket. | Status: done
 - [ ] **Implement k-fold split** — Shuffle with seeded PRNG, divide into `k` consecutive groups of approximately equal size. Return `KFoldResult` with `folds` array and `getFold(i)` method. | Status: not_done
 - [ ] **Implement holdout support** — Before splitting, remove test cases matching holdout criteria (by IDs, tags, or predicate). Return held-out cases separately in the `SplitResult`. | Status: not_done
-- [ ] **Implement SplitResult construction** — Each partition is a full Dataset with name suffixed (e.g., `qa-eval/train`), same version, and the partition's subset of cases. Inherit parent metadata and schema. | Status: not_done
+- [x] **Implement SplitResult construction** — Each partition is a full Dataset with name suffixed (e.g., `qa-eval/train`), same version, and the partition's subset of cases. Inherit parent metadata and schema. | Status: done
 - [ ] **Validate split ratios** — Throw an error if ratios do not sum to 1.0 (within floating-point tolerance). Throw if any ratio is negative or zero. | Status: not_done
-- [ ] **Wire Dataset.split() method** — Connect the Dataset class `split()` method to the `split.ts` implementation. | Status: not_done
-- [ ] **Write split tests** — Create `src/__tests__/split.test.ts`. Test: partition sizes match ratios, no overlap between partitions, all cases accounted for, determinism with same seed, different results with different seed, stratified proportionality, k-fold fold sizes and rotation, holdout exclusion. | Status: not_done
+- [x] **Wire Dataset.split() method** — Connect the Dataset class `split()` method to the `split.ts` implementation. | Status: done
+- [x] **Write split tests** — Create `src/__tests__/split.test.ts`. Test: partition sizes match ratios, no overlap between partitions, all cases accounted for, determinism with same seed, different results with different seed, stratified proportionality, k-fold fold sizes and rotation, holdout exclusion. | Status: done
 - [ ] **Write split edge case tests** — Test: empty dataset, single test case, single partition (ratio: { all: 1.0 }), dataset with no categories for stratified split (fallback to random), very small dataset with many partitions. | Status: not_done
 
 ---
 
 ## Phase 7: Sampling
 
-- [ ] **Implement random sampling** — In `src/sample.ts`, implement random sampling using seeded PRNG. Select `n` cases uniformly at random. Error if `n > dataset.size` and `replace` is false. | Status: not_done
-- [ ] **Implement sampling with replacement** — When `replace: true`, allow selecting the same case multiple times. Suffix IDs of duplicates with `_dup1`, `_dup2`, etc. | Status: not_done
-- [ ] **Implement stratified sampling** — Compute category distribution, allocate sample slots proportionally (round then adjust to sum to `n`), randomly select within each category. | Status: not_done
+- [x] **Implement random sampling** — In `src/sample.ts`, implement random sampling using seeded PRNG. Select `n` cases uniformly at random. Error if `n > dataset.size` and `replace` is false. | Status: done
+- [x] **Implement sampling with replacement** — When `replace: true`, allow selecting the same case multiple times. Suffix IDs of duplicates with `_dup1`, `_dup2`, etc. | Status: done
+- [x] **Implement stratified sampling** — Compute category distribution, allocate sample slots proportionally (round then adjust to sum to `n`), randomly select within each category. | Status: done
 - [ ] **Implement difficulty-weighted sampling** — Weight selection probability by `difficulty` value. Cases without `difficulty` receive weight 1.0. Normalize weights, select `n` using weighted random sampling. | Status: not_done
 - [ ] **Implement category-balanced sampling** — Allocate `floor(n / numCategories)` per category, distribute remainder round-robin. If a category has fewer cases than its allocation, select all and redistribute. | Status: not_done
-- [ ] **Wire Dataset.sample() method** — Connect the Dataset class `sample()` method to the `sample.ts` implementation. | Status: not_done
-- [ ] **Write sample tests** — Create `src/__tests__/sample.test.ts`. Test: correct sample size, determinism with seed, stratified proportionality, difficulty weighting (high-difficulty overrepresented), category balance, replacement with ID suffixing. | Status: not_done
+- [x] **Wire Dataset.sample() method** — Connect the Dataset class `sample()` method to the `sample.ts` implementation. | Status: done
+- [x] **Write sample tests** — Create `src/__tests__/sample.test.ts`. Test: correct sample size, determinism with seed, stratified proportionality, difficulty weighting (high-difficulty overrepresented), category balance, replacement with ID suffixing. | Status: done
 - [ ] **Write sample edge case tests** — Test: n equals dataset size, n > dataset size without replacement (error), n > dataset size with replacement, single category, no categories for stratified, no difficulty values for difficulty-weighted. | Status: not_done
 
 ---
 
 ## Phase 8: Deduplication
 
-- [ ] **Implement exact deduplication** — In `src/dedup.ts`, implement exact match dedup. Compare `field` (default: `input`). Track seen keys in a Map. Respect `caseSensitive` option (default: false). Support `keep` strategy: 'first', 'last', 'most-complete'. | Status: not_done
+- [x] **Implement exact deduplication** — In `src/dedup.ts`, implement exact match dedup. Compare `field` (default: `input`). Track seen keys in a Map. Respect `caseSensitive` option (default: false). Support `keep` strategy: 'first', 'last', 'most-complete'. | Status: done
 - [ ] **Implement 'most-complete' keep strategy** — Count non-undefined optional fields (`expected`, `context`, `tags`, `category`, `difficulty`) for each duplicate. Keep the one with the most. Tie-break: keep first. | Status: not_done
-- [ ] **Implement normalized deduplication** — Normalize comparison values: lowercase, collapse whitespace to single space, remove punctuation, trim. Then apply exact dedup logic on normalized values. | Status: not_done
-- [ ] **Implement near-duplicate detection** — Tokenize comparison values (split on whitespace, lowercase). Compute pairwise Jaccard similarity (`|A intersect B| / |A union B|`). Group near-duplicates using union-find for transitive closure. Keep one representative per group. | Status: not_done
+- [x] **Implement normalized deduplication** — Normalize comparison values: lowercase, collapse whitespace to single space, remove punctuation, trim. Then apply exact dedup logic on normalized values. | Status: done
+- [x] **Implement near-duplicate detection** — Tokenize comparison values (split on whitespace, lowercase). Compute pairwise Jaccard similarity (`|A intersect B| / |A union B|`). Group near-duplicates using union-find for transitive closure. Keep one representative per group. | Status: done
 - [ ] **Implement token caching for near-dedup** — Tokenize each test case once and cache the token set. Reuse across pairwise comparisons. | Status: not_done
 - [ ] **Implement MinHash optimization** — For datasets > 5,000 cases, use MinHash (locality-sensitive hashing) to identify candidate near-duplicate pairs before computing exact Jaccard. Reduce from O(n^2) to approximately O(n*k). | Status: not_done
 - [ ] **Implement Jaccard early termination** — When computing Jaccard similarity, track maximum possible score and terminate early if it cannot exceed the threshold. | Status: not_done
 - [ ] **Implement union-find data structure** — Implement a union-find (disjoint-set) for grouping transitive near-duplicates. | Status: not_done
 - [ ] **Implement DedupReport generation** — Return `DedupReport` with `originalCount`, `deduplicatedCount`, `removedCount`, and `duplicateGroups` (each with `kept`, `removed`, optional `similarity`). | Status: not_done
 - [ ] **Implement crossSplitDedup()** — Create `crossSplitDedup(splits, options)` function. Accept multiple Dataset objects. Identify test cases appearing in multiple splits using the configured dedup mode. Remove duplicates from all splits except the `keepIn` split (or first occurrence). Return cleaned splits and report. | Status: not_done
-- [ ] **Wire Dataset.dedup() method** — Connect the Dataset class `dedup()` method to the `dedup.ts` implementation. Return `{ dataset, report }`. | Status: not_done
-- [ ] **Write dedup tests** — Create `src/__tests__/dedup.test.ts`. Test: exact dedup removes identical inputs, normalized dedup handles case/whitespace/punctuation, near-dedup with various thresholds, keep strategies (first/last/most-complete), report accuracy, cross-split dedup. | Status: not_done
+- [x] **Wire Dataset.dedup() method** — Connect the Dataset class `dedup()` method to the `dedup.ts` implementation. Return `{ dataset, report }`. | Status: done
+- [x] **Write dedup tests** — Create `src/__tests__/dedup.test.ts`. Test: exact dedup removes identical inputs, normalized dedup handles case/whitespace/punctuation, near-dedup with various thresholds, keep strategies (first/last/most-complete), report accuracy, cross-split dedup. | Status: done
 - [ ] **Write dedup edge case tests** — Test: all cases identical (reduce to 1), no duplicates (no change), threshold 0.0 (everything is duplicate), threshold 1.0 (nothing is duplicate), empty dataset, single case. | Status: not_done
 
 ---
 
 ## Phase 9: Export / Format Conversion
 
-- [ ] **Implement export to JSON** — In `src/export.ts`, serialize Dataset to internal JSON format. Support `pretty` option (default: true, indent 2 spaces). | Status: not_done
-- [ ] **Implement export to JSONL** — Serialize each test case as one JSON line. Support optional `fieldMap` for custom field names. | Status: not_done
-- [ ] **Implement export to CSV** — Use `csv-stringify` to generate CSV. Support `columnOrder` option. Map TestCase fields to columns. Serialize `context` as JSON array string. Serialize `tags` as comma-separated. Serialize `metadata` as individual columns or JSON. | Status: not_done
+- [x] **Implement export to JSON** — In `src/export.ts`, serialize Dataset to internal JSON format. Support `pretty` option (default: true, indent 2 spaces). | Status: done
+- [x] **Implement export to JSONL** — Serialize each test case as one JSON line. Support optional `fieldMap` for custom field names. | Status: done
+- [x] **Implement export to CSV** — Use `csv-stringify` to generate CSV. Support `columnOrder` option. Map TestCase fields to columns. Serialize `context` as JSON array string. Serialize `tags` as comma-separated. Serialize `metadata` as individual columns or JSON. | Status: done
 - [ ] **Implement export to TSV** — Reuse CSV export with tab delimiter. | Status: not_done
 - [ ] **Implement export to promptfoo** — Map `input` to `vars.query` (or configured `inputVar`), `expected` to `assert` array with configured `assertType` (default: 'equals'), `id` to `description`, `tags`/`category`/`difficulty` into `metadata`. Wrap in `{ tests: [...] }` structure. Serialize as YAML. | Status: not_done
 - [ ] **Implement export to autoevals** — Map `input` to `input`, `expected` to `expected`, fold `context`/`tags`/`category`/`difficulty`/`id` into `metadata`. Serialize as JSON array. | Status: not_done
 - [ ] **Implement export to RAGAS** — Map `input` to `question`, `expected` to `ground_truth`, `context` to `contexts`. Drop `id`, `tags`, `category`, `difficulty`. Emit lossy conversion warning. | Status: not_done
 - [ ] **Implement lossy field handling** — When exporting drops fields, behave according to `onLossyField` option: 'warn' (emit warning to stderr with field counts), 'error' (throw ExportError), 'silent' (drop silently). | Status: not_done
 - [ ] **Implement lossy warning message format** — Warning should list each dropped field and how many test cases have that field (e.g., "id (present in 200/200 test cases)"). | Status: not_done
-- [ ] **Wire Dataset.export() method** — Connect the Dataset class `export()` method to the `export.ts` implementation. | Status: not_done
-- [ ] **Write export tests** — Create `src/__tests__/export.test.ts`. Test each format output: JSON structure, JSONL line format, CSV columns, promptfoo YAML structure, autoevals JSON structure, RAGAS JSON structure. | Status: not_done
+- [x] **Wire Dataset.export() method** — Connect the Dataset class `export()` method to the `export.ts` implementation. | Status: done
+- [x] **Write export tests** — Create `src/__tests__/export.test.ts`. Test each format output: JSON structure, JSONL line format, CSV columns, promptfoo YAML structure, autoevals JSON structure, RAGAS JSON structure. | Status: done
 - [ ] **Write round-trip tests** — For each format pair (A, B), test: load from A, export to B, load from B. Verify lossless fields are preserved and lossy fields are absent. | Status: not_done
 - [ ] **Write lossy conversion tests** — Test all three onLossyField modes: warn emits to stderr, error throws, silent drops quietly. | Status: not_done
 
@@ -192,9 +192,9 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 
 ## Phase 10: Validation
 
-- [ ] **Implement ID uniqueness check** — In `src/validate.ts`, detect duplicate IDs. Produce `ValidationError` with type `'duplicate-id'`. | Status: not_done
+- [x] **Implement ID uniqueness check** — In `src/validate.ts`, detect duplicate IDs. Produce `ValidationError` with type `'duplicate-id'`. | Status: done
 - [ ] **Implement required fields check** — If schema specifies `requiredFields`, verify every test case has non-undefined values for those fields. Produce errors for missing required fields. | Status: not_done
-- [ ] **Implement input non-empty check** — Every test case must have a non-empty `input` string. Produce error for empty inputs. | Status: not_done
+- [x] **Implement input non-empty check** — Every test case must have a non-empty `input` string. Produce error for empty inputs. | Status: done
 - [ ] **Implement type validation** — Verify field types: `input` is string, `context` is string array, `difficulty` is number, `tags` is string array, `category` is string, `metadata` is object. Produce errors for wrong types. | Status: not_done
 - [ ] **Implement category validation** — If schema specifies `categories` (allowed values), produce error for test cases with unlisted category values. | Status: not_done
 - [ ] **Implement difficulty range validation** — If schema specifies `difficultyRange`, produce error for test cases with out-of-range difficulty values. | Status: not_done
@@ -203,23 +203,23 @@ This file tracks all implementation tasks derived from SPEC.md. Each task is gra
 - [ ] **Implement duplicate input detection warning** — Produce warning for test cases with identical (exact or normalized) `input` values (type `'duplicate-input'`). | Status: not_done
 - [ ] **Implement empty context warning** — Produce warning for test cases with empty `context` array `[]` (type `'empty-context'`). | Status: not_done
 - [ ] **Implement missing category warning** — Produce warning for test cases without a `category` value (type `'missing-category'`). | Status: not_done
-- [ ] **Wire Dataset.validate() method** — Connect the Dataset class `validate()` method to the `validate.ts` implementation. Return `ValidationResult`. | Status: not_done
-- [ ] **Write validation tests** — Create `src/__tests__/validate.test.ts`. One test per validation rule. Test both error and warning cases. Test valid dataset returns `valid: true`. | Status: not_done
+- [x] **Wire Dataset.validate() method** — Connect the Dataset class `validate()` method to the `validate.ts` implementation. Return `ValidationResult`. | Status: done
+- [x] **Write validation tests** — Create `src/__tests__/validate.test.ts`. One test per validation rule. Test both error and warning cases. Test valid dataset returns `valid: true`. | Status: done
 
 ---
 
 ## Phase 11: Statistics
 
-- [ ] **Implement totalCases count** — In `src/stats.ts`, count total number of test cases. | Status: not_done
-- [ ] **Implement expected/context coverage** — Count cases with `expected` and `context`. Compute coverage ratios (count / total). | Status: not_done
-- [ ] **Implement category distribution** — Compute a map of category values to their counts. | Status: not_done
-- [ ] **Implement tag distribution** — Compute a map of tags to their counts across all cases. | Status: not_done
+- [x] **Implement totalCases count** — In `src/stats.ts`, count total number of test cases. | Status: done
+- [x] **Implement expected/context coverage** — Count cases with `expected` and `context`. Compute coverage ratios (count / total). | Status: done
+- [x] **Implement category distribution** — Compute a map of category values to their counts. | Status: done
+- [x] **Implement tag distribution** — Compute a map of tags to their counts across all cases. | Status: done
 - [ ] **Implement difficulty statistics** — Compute min, max, mean, median difficulty. Compute distribution (difficulty value to count). Return null if no cases have difficulty. | Status: not_done
-- [ ] **Implement input length statistics** — Compute min, max, mean, median, stddev, p90, p99 of input string lengths. | Status: not_done
+- [x] **Implement input length statistics** — Compute min, max, mean, median, stddev, p90, p99 of input string lengths. | Status: done
 - [ ] **Implement expected length statistics** — Compute min, max, mean, median, stddev of expected output string lengths. Return null if no cases have expected. | Status: not_done
 - [ ] **Implement duplicate counts** — Compute exact and normalized duplicate counts. | Status: not_done
-- [ ] **Wire Dataset.stats() method** — Connect the Dataset class `stats()` method to the `stats.ts` implementation. Return `DatasetStats`. | Status: not_done
-- [ ] **Write stats tests** — Create `src/__tests__/stats.test.ts`. Verify counts, distributions, length statistics, percentiles, and duplicate counts. | Status: not_done
+- [x] **Wire Dataset.stats() method** — Connect the Dataset class `stats()` method to the `stats.ts` implementation. Return `DatasetStats`. | Status: done
+- [x] **Write stats tests** — Create `src/__tests__/stats.test.ts`. Verify counts, distributions, length statistics, percentiles, and duplicate counts. | Status: done
 
 ---
 

@@ -3,6 +3,7 @@
 Version-controlled eval dataset manager for LLM testing.
 
 [![npm version](https://img.shields.io/npm/v/eval-dataset.svg)](https://www.npmjs.com/package/eval-dataset)
+[![npm downloads](https://img.shields.io/npm/dt/eval-dataset.svg)](https://www.npmjs.com/package/eval-dataset)
 [![license](https://img.shields.io/npm/l/eval-dataset.svg)](https://github.com/SiluPanda/eval-dataset/blob/master/LICENSE)
 [![node](https://img.shields.io/node/v/eval-dataset.svg)](https://nodejs.org)
 

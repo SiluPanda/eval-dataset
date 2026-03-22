@@ -1,6 +1,6 @@
 {
   "name": "eval-dataset",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Version-controlled eval dataset manager for LLM testing",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

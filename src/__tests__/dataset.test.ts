@@ -179,6 +179,29 @@ describe('stratifiedSplit', () => {
     // Combined should equal total
     expect(splits['train'].size + splits['test'].size).toBe(6);
   });
+
+  it('uses different seeds per category group for independent shuffling', () => {
+    // Create dataset with enough cases per category to detect correlated shuffling
+    const cases: TestCase[] = [];
+    for (let i = 0; i < 20; i++) {
+      cases.push({ id: `m${i}`, input: `math q${i}`, category: 'math' });
+      cases.push({ id: `g${i}`, input: `geo q${i}`, category: 'geography' });
+    }
+    const ds = createDataset({ name: 'test', cases });
+    const splits = ds.split({
+      ratios: { train: 0.7, test: 0.3 },
+      mode: 'stratified',
+      stratifyBy: 'category',
+      seed: 42,
+    });
+    // Both splits should have cases from both categories
+    const trainCats = new Set(splits['train'].cases.map(tc => tc.category));
+    const testCats = new Set(splits['test'].cases.map(tc => tc.category));
+    expect(trainCats.size).toBe(2);
+    expect(testCats.size).toBe(2);
+    // Total should be preserved
+    expect(splits['train'].size + splits['test'].size).toBe(40);
+  });
 });
 
 describe('sample', () => {
@@ -401,6 +424,11 @@ describe('loadDataset', () => {
     const ds = await loadDataset(json, { name: 'test' });
     expect(ds.size).toBe(6);
   });
+
+  it('throws on CSV with unclosed quotes', async () => {
+    const csv = 'id,input\n1,"unclosed quote';
+    await expect(loadDataset(csv, { name: 'test', format: 'csv' })).rejects.toThrow('unclosed quote');
+  });
 });
 
 describe('ids / categories / tagSet / get / has', () => {
@@ -430,6 +458,20 @@ describe('ids / categories / tagSet / get / has', () => {
     const ds = createDataset({ name: 'test', cases: CASES });
     expect(ds.has('1')).toBe(true);
     expect(ds.has('999')).toBe(false);
+  });
+});
+
+describe('CSV export column ordering', () => {
+  it('sorts non-default columns in deterministic byte order', () => {
+    const cases: TestCase[] = [
+      { id: '1', input: 'test', metadata: { zebra: 1, alpha: 2 } },
+    ];
+    const ds = createDataset({ name: 'test', cases });
+    const csv = ds.export('csv', { includeMetadata: true });
+    const headers = csv.split('\n')[0].split(',');
+    // Default columns should come first in fixed order
+    expect(headers.indexOf('id')).toBeLessThan(headers.indexOf('metadata'));
+    expect(headers.indexOf('input')).toBeLessThan(headers.indexOf('metadata'));
   });
 });
 

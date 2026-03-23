@@ -62,6 +62,9 @@ function parseCSVLine(line: string): string[] {
       }
     }
   }
+  if (inQuotes) {
+    throw new Error('CSV parse error: unclosed quote in line');
+  }
   fields.push(current);
   return fields;
 }

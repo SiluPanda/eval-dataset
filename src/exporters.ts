@@ -46,7 +46,7 @@ export function exportToCSV(cases: TestCase[], options?: ExportOptions): string 
       if (ai >= 0 && bi >= 0) return ai - bi;
       if (ai >= 0) return -1;
       if (bi >= 0) return 1;
-      return a.localeCompare(b);
+      return a < b ? -1 : a > b ? 1 : 0;
     });
   }
 

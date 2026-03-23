@@ -51,8 +51,10 @@ export function stratifiedSplit(
   const merged: Record<string, TestCase[]> = {};
   for (const k of splitKeys) merged[k] = [];
 
-  for (const group of Object.values(groups)) {
-    const groupSplit = randomSplit(group, ratios, seed);
+  const groupValues = Object.values(groups);
+  for (let gi = 0; gi < groupValues.length; gi++) {
+    const group = groupValues[gi];
+    const groupSplit = randomSplit(group, ratios, seed + gi);
     for (const k of splitKeys) {
       if (groupSplit[k]) {
         merged[k].push(...groupSplit[k]);
